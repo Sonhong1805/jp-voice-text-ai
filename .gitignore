@@ -1,4 +1,4 @@
-# =========================
+﻿# =========================
 # Logs
 # =========================
 logs/
@@ -40,7 +40,7 @@ desktop.ini
 # =========================
 __pycache__/
 *.py[cod]
-*$py.class
+*.class
 *.so
 *.pyc
 
@@ -80,6 +80,13 @@ datasets/
 checkpoints/
 
 # =========================
+# Database
+# =========================
+history.db
+*.sqlite
+*.sqlite3
+
+# =========================
 # IDE
 # =========================
 .vscode/
@@ -93,19 +100,8 @@ checkpoints/
 # =========================
 # Frontend build
 # =========================
-frontend/dist/
-frontend/.vite/
 dist/
 build/
 out/
 coverage/
-.next/
-.nuxt/
-
-# =========================
-# Backend build
-# =========================
-backend/target/
-backend/build/
-backend/.gradle/
-backend/dist/
+.vite/
