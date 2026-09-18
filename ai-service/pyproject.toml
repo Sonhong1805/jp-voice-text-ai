@@ -1,0 +1,32 @@
+[project]
+name = "ai-service"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Nguyen Ngoc Quang", email = "vn.developer@commude.co.jp" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "aiosqlite>=0.22.1",
+    "av>=18.1.0",
+    "edge-tts>=7.2.8",
+    "fastapi[standard]>=0.141.1",
+    "levenshtein>=0.27.4",
+    "librosa>=1.0.0",
+    "pydantic>=2.13.5",
+    "pyopenjtalk>=0.4.1",
+    "python-multipart>=0.0.32",
+    "sqlalchemy>=2.0.53",
+    "torch>=2.14.0",
+    "torchaudio>=2.11.0",
+    "transformers>=5.17.0",
+    "uvicorn>=0.52.4",
+]
+
+[project.scripts]
+ai-service = "ai_service:main"
+
+[build-system]
+requires = ["uv_build>=0.12.13,<0.13.0"]
+build-backend = "uv_build"

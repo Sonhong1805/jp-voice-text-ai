@@ -1,0 +1,25 @@
+
+--- Testing: がっこう ---
+Scores: {'phoneme': 100.0, 'completeness': 83.33, 'fluency': 46.32, 'overall': 80.56}
+Error [geminate]: Hệ thống phát hiện khả năng âm ngắt (っ) chưa rõ.
+
+--- Testing: スーパー ---
+Scores: {'phoneme': 100.0, 'completeness': 66.67, 'fluency': 44.93, 'overall': 76.81}
+Error [long_vowel]: Hệ thống phát hiện khả năng trường âm (ー) hơi ngắn.
+
+--- Testing: せんせい ---
+Scores: {'phoneme': 100.0, 'completeness': 83.33, 'fluency': 46.32, 'overall': 80.56}
+Error [hatsuon]: Hệ thống phát hiện khả năng âm mũi (ん) chưa rõ.
+
+--- Testing: きょう ---
+Scores: {'phoneme': 25.0, 'completeness': 100.0, 'fluency': 46.32, 'overall': 46.4}
+Error [mispronunciation]: Phát âm từ 'きょう' chưa chính xác.
+
+--- Testing: こんにちは ---
+Scores: {'phoneme': 100.0, 'completeness': 100.0, 'fluency': 50.43, 'overall': 85.13}
+
+--- Testing: こんにちは、元気ですか ---
+Scores: {'phoneme': 100.0, 'completeness': 45.0, 'fluency': 50.43, 'overall': 74.13}
+Error [missing]: Chưa đọc: 元気
+Error [missing]: Chưa đọc: です
+Error [missing]: Chưa đọc: か
