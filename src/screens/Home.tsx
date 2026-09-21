@@ -7,6 +7,7 @@ import AudioRecorder from '../components/AudioRecorder';
 import ScoreCard from '../components/ScoreCard';
 import PronunciationAnalysis from '../components/PronunciationAnalysis';
 import ActionableFeedback from '../components/ActionableFeedback';
+import AISenseiCoaching from '../components/AISenseiCoaching';
 import HistorySidebar from '../components/HistorySidebar';
 import HistoryPopup from '../components/HistoryPopup';
 import ConfirmDialog from '../components/ConfirmDialog';
@@ -295,6 +296,7 @@ export default function Home({ text }: { text: string }) {
                   <div className="mt-8 pt-8 border-t border-slate-300 dark:border-slate-700/50 animate-in slide-in-from-bottom-4 duration-500 delay-100">
                     <PronunciationAnalysis scoreData={scoreData} />
                     <ActionableFeedback scoreData={scoreData} playText={playText} />
+                    <AISenseiCoaching scoreData={scoreData} expectedText={text} />
                   </div>
                 )}
               </div>

@@ -1,10 +1,18 @@
-﻿from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, StreamingResponse
 import os
+from dotenv import load_dotenv
+load_dotenv()
+
+import mimetypes
+mimetypes.add_type('application/javascript', '.js')
+mimetypes.add_type('text/css', '.css')
+mimetypes.add_type('image/svg+xml', '.svg')
+
 from pydantic import BaseModel
-from typing import List, Optional, Dict, Any
+from typing import List, Optional
 
 from asr.wav2vec2 import ASRService
 from normalization.g2p import normalize_and_get_phonemes
@@ -34,6 +42,12 @@ class TTSRequest(BaseModel):
     text: str
     speed: float = 1.0
     voice: str = "ja-JP-NanamiNeural"
+
+class CoachingRequest(BaseModel):
+    expected_text: str
+    transcription: str
+    errors: list[dict]
+
 
 class Chunk(BaseModel):
     text: str
@@ -119,7 +133,7 @@ async def transcribe_audio(audio: UploadFile = File(...)):
     if asr_result.get("status") == "error":
         return {"status": "error", "error_type": asr_result.get("error_type", "asr_unrecognized"), "message": asr_result.get("message", "Khng nh?n di?n du?c gi?ng ni.")}
         
-    transcription = asr_result.get("transcription", "").strip()
+    transcription = str(asr_result.get("transcription", "")).strip()
     if not transcription:
         return {"status": "error", "error_type": "asr_unrecognized", "message": "Khng nh?n di?n du?c gi?ng ni."}
         
@@ -166,9 +180,9 @@ async def score_pronunciation(audio: UploadFile = File(...), expected_text: str 
 
     evaluation = evaluate_pronunciation(
         expected_text=expected_text,
-        actual_phonemes_str=asr_result["phonemes"],
-        actual_phoneme_chunks=asr_result["phoneme_chunks"],
-        audio_duration=asr_result["audio_duration"],
+        actual_phonemes_str=str(asr_result["phonemes"]),
+        actual_phoneme_chunks=asr_result["phoneme_chunks"],  # type: ignore
+        audio_duration=float(asr_result["audio_duration"]),  # type: ignore
         user_audio_data=audio_data,
         ref_audio_data=ref_audio_data
     )
@@ -300,7 +314,42 @@ async def generate_tts(req: TTSRequest):
     return StreamingResponse(io.BytesIO(audio_data), media_type="audio/mpeg")
 
 
+
+from google import genai
+
+@app.post("/api/coaching")
+async def get_coaching(req: CoachingRequest):
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        return {"status": "error", "message": "API_KEY_MISSING"}
+        
+    try:
+        client = genai.Client(api_key=api_key)
+        error_details = "\n".join([f"- Từ: '{e['word']}', phát âm thành: '{e.get('token', '?')}'. {e.get('message', '')}" for e in req.errors])
+        
+        prompt = f"""Bạn là một giáo viên dạy phát âm tiếng Nhật tận tâm (Sensei).
+Học viên vừa đọc câu: "{req.expected_text}"
+Hệ thống nhận diện học viên đọc thành: "{req.transcription}"
+
+Các lỗi phát âm:
+{error_details}
+
+Hãy viết một đoạn ngắn gọn (khoảng 3-4 câu) bằng tiếng Việt để:
+1. Động viên.
+2. Giải thích cách đặt lưỡi, khẩu hình miệng để phát âm đúng.
+Trả về bằng Markdown."""
+
+        response = client.models.generate_content(
+            model='gemini-3.6-flash',
+            contents=prompt,
+        )
+        return {"status": "success", "markdown": response.text}
+    except Exception as e:
+        print(f"Gemini API Error: {e}")
+        return {"status": "error", "message": str(e)}
+
 # ==========================================
+
 # Frontend Serving (Monolithic integration)
 # ==========================================
 FRONTEND_DIST = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dist")

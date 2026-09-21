@@ -1,5 +1,4 @@
-﻿import os
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
+﻿from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from sqlalchemy.orm import declarative_base
 
 DATABASE_URL = "sqlite+aiosqlite:///./history.db"

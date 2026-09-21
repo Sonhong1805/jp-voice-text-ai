@@ -1,4 +1,4 @@
-﻿[project]
+[project]
 name = "ai-service"
 version = "0.1.0"
 description = "Add your description here"
@@ -12,10 +12,12 @@ dependencies = [
     "av>=18.1.0",
     "edge-tts>=7.2.8",
     "fastapi[standard]>=0.141.1",
+    "google-genai>=2.24.0",
     "levenshtein>=0.27.4",
     "librosa>=1.0.0",
     "pydantic>=2.13.5",
     "pyopenjtalk>=0.4.1",
+    "python-dotenv>=1.2.3",
     "python-multipart>=0.0.32",
     "sqlalchemy>=2.0.53",
     "torch>=2.14.0",
@@ -28,3 +30,8 @@ dependencies = [
 [tool.uv]
 package = false
 
+[tool.pyright]
+executionEnvironments = [
+  { root = "." }
+]
+extraPaths = ["."]

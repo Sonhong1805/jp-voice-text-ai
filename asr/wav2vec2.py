@@ -1,5 +1,4 @@
 ﻿import os
-import sys
 import numpy as np
 import torch
 from transformers import Wav2Vec2FeatureExtractor
