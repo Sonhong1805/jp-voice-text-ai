@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Save, X, Search, AlertCircle, CheckCircle2, History, Upload } from 'lucide-react';
+import TranslatorWidget from '../components/TranslatorWidget';
 import AIVoiceGenerator from '../components/AIVoiceGenerator';
 import type { ExpectedChunk, SavedSentence } from '../types';
 
@@ -253,6 +254,15 @@ export default function SetText({ initialText, onSave }: SetTextProps) {
             className={`w-full bg-white dark:bg-slate-950 border ${textError ? 'border-red-500' : 'border-slate-300 dark:border-slate-700'} rounded-lg p-4 text-xl text-slate-800 dark:text-slate-200 focus:outline-none focus:border-blue-500 min-h-[120px] resize-y transition-colors mb-2`}
             placeholder="Hãy nhập câu tiếng Nhật..."
           />
+
+          <div className="mb-4">
+            <TranslatorWidget 
+              onApply={(t) => {
+                setInputText(t);
+              }}
+            />
+          </div>
+
           
           <div className="flex justify-between items-start mb-4">
             <div className="flex-1">
@@ -384,3 +394,4 @@ export default function SetText({ initialText, onSave }: SetTextProps) {
     </div>
   );
 }
+

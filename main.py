@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+﻿from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, StreamingResponse
@@ -15,6 +15,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 
 from asr.wav2vec2 import ASRService
+from translation.qwen import TranslationService
 from normalization.g2p import normalize_and_get_phonemes
 from scoring.engine import evaluate_pronunciation
 from audio.validation import AudioValidator, AudioValidationException
@@ -42,6 +43,11 @@ class TTSRequest(BaseModel):
     text: str
     speed: float = 1.0
     voice: str = "ja-JP-NanamiNeural"
+
+class TranslateRequest(BaseModel):
+    text: str
+    source_lang: str = "vie_Latn"
+    target_lang: str = "jpn_Jpan"
 
 class CoachingRequest(BaseModel):
     expected_text: str
@@ -95,6 +101,7 @@ class ScoreResponse(BaseModel):
     phoneme_chunks: Optional[List[Chunk]] = None
 
 asr_service = ASRService()
+translation_service = TranslationService()
 audio_validator = AudioValidator(max_duration=60.0, min_duration=0.1, max_size_mb=50.0, rms_threshold=0.0001)
 
 
@@ -317,6 +324,15 @@ async def generate_tts(req: TTSRequest):
 
 from google import genai
 
+@app.post("/api/translate")
+async def translate_text(req: TranslateRequest):
+    try:
+        translated = translation_service.translate(req.text, req.source_lang, req.target_lang)
+        return {"status": "success", "translated_text": translated}
+    except Exception as e:
+        print(f"Translation Error: {e}")
+        return {"status": "error", "message": str(e)}
+
 @app.post("/api/coaching")
 async def get_coaching(req: CoachingRequest):
     api_key = os.getenv("GEMINI_API_KEY")
@@ -368,3 +384,4 @@ async def serve_frontend(full_path: str):
         
     # Otherwise, return index.html and let React Router handle the route
     return FileResponse(os.path.join(FRONTEND_DIST, "index.html"))
+

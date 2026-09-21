@@ -19,6 +19,7 @@ dependencies = [
     "pyopenjtalk>=0.4.1",
     "python-dotenv>=1.2.3",
     "python-multipart>=0.0.32",
+    "sentencepiece>=0.2.2",
     "sqlalchemy>=2.0.53",
     "torch>=2.14.0",
     "torchaudio>=2.11.0",
