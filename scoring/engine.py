@@ -1,5 +1,4 @@
-﻿from typing import List, Dict, Any
-from .metrics import calculate_phoneme_accuracy, calculate_completeness
+from typing import List, Dict, Any, Optional
 from .fluency import calculate_fluency
 from .alignment import align_phonemes
 from normalization.g2p import get_expected_chunks
@@ -12,8 +11,8 @@ def evaluate_pronunciation(
     actual_phonemes_str: str, 
     actual_phoneme_chunks: List[Dict[str, Any]], 
     audio_duration: float,
-    user_audio_data: np.ndarray = None,
-    ref_audio_data: np.ndarray = None
+    user_audio_data: Optional[np.ndarray] = None,
+    ref_audio_data: Optional[np.ndarray] = None
 ) -> Dict[str, Any]:
     expected_chunks = get_expected_chunks(expected_text)
     actual_phonemes_raw = actual_phonemes_str.split() if actual_phonemes_str else []

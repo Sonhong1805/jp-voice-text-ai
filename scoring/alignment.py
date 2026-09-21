@@ -1,7 +1,7 @@
 from typing import List, Dict, Any, Tuple
 import Levenshtein
 
-def align_phonemes(expected_chunks: List[Dict[str, Any]], actual_phonemes: List[str]) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+def align_phonemes(expected_chunks: List[Dict[str, Any]], actual_phonemes: List[str]) -> Tuple[List[Dict[str, Any]], List[Tuple[str, int, int]]]:
     """
     Aligns actual phonemes with expected chunks.
     Returns:
