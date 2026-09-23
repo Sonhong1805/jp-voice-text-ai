@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import { Users, Music, Ear } from 'lucide-react';
 import WaveformPlayer from './WaveformPlayer';
+import { AI_VOICES } from '../constants/voices';
 
-const AI_VOICES = [
-  { id: 'ja-JP-NanamiNeural', name: 'Nanami (Nữ phổ thông)', gender: 'Nữ', badge: 'HOT' },
-  { id: 'ja-JP-KeitaNeural', name: 'Keita (Nam trầm ấm)', gender: 'Nam', badge: 'HOT' },
-];
+
 
 interface AIVoiceGeneratorProps {
   text: string;
@@ -120,7 +118,7 @@ export default function AIVoiceGenerator({ text, startCollapsed = false }: AIVoi
                       )}
                     </div>
                     <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                      Tiếng Nhật • {voice.gender}
+                      {voice.language} • {voice.gender}
                     </div>
                   </div>
                 </div>

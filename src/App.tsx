@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './screens/Home';
 import SetText from './screens/SetText';
+import ConversationScript from './screens/ConversationScript';
 import { Sun, Moon } from 'lucide-react';
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home text={currentText} />} />
           <Route path="/set-text" element={<SetText initialText={currentText} onSave={setCurrentText} />} />
+          <Route path="/script" element={<ConversationScript />} />
         </Routes>
       </BrowserRouter>
     </div>
