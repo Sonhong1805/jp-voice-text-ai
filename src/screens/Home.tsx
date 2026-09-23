@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { HelpCircle, Mic, Settings } from 'lucide-react';
+import { HelpCircle, Mic, Settings, MessageSquare } from 'lucide-react';
 import type { ScoreData, HistoryItem } from '../types';
 
 import AudioRecorder from '../components/AudioRecorder';
@@ -244,6 +244,12 @@ export default function Home({ text }: { text: string }) {
             </h1>
           </div>
           <div className="flex gap-3">
+            <button 
+              onClick={() => navigate('/script')}
+              className="flex items-center gap-2 px-5 py-2 text-sm font-medium bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition-all shadow-sm shadow-indigo-500/30"
+            >
+              <MessageSquare size={18} /> Kịch Bản
+            </button>
             <button 
               onClick={() => navigate('/set-text')}
               className="flex items-center gap-2 px-5 py-2 text-sm font-medium bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl transition-all border border-slate-300 dark:border-slate-700/50 shadow-sm"
